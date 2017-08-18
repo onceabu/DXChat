@@ -42,5 +42,15 @@ ServerThread主要负责对消息的处理，当用户A向用户B发送一条消
 * 功能实现<br>
 注册中对邮箱、密码、手机号等不同格式的信息输入通过正则表达式进行判断，同时也可以通过图片选择器上传头像和个人主页背景，关于图片选择器的具体实现会在好友动态中详细说明。注册过程中字符和图片数据通过OkHttp发送至服务端并存储到mysql用户表中，同样图片文件存储到文件夹中，数据库只保存图片的字符索引。注册成功后借助sharePreference将用户的相关信息保存在本地，便于以后登录的直接使用。
 ## 三、好友动态
-
-
+* UI<br>
+好友动态中的UI包括基于RecyclerView实现的动态列表、基于旋转动画的圆形菜单、基于Loader+Glide+RecyclerView的图片选择器以及自定义的动态详情页面。<br>
+![](https://github.com/onceabu/chat/raw/master/picture/CircleMenu.gif)<br>
+![](https://github.com/onceabu/chat/raw/master/picture/picSelector.gif)
+![](https://github.com/onceabu/chat/raw/master/picture/comment.gif)<br>
+* 功能实现<br>
+1、圆形菜单最初的想法是通过对屏幕上的各种高度宽度的计算得到圆心位置，然后通过半径和三角函数计算圆的轨迹，但多次尝试后发现效果不佳，然后考虑到RotationAnimation，起初测试发现效果不错，计算出正确的圆心后Button便可以进行任意角度的圆形轨迹旋转，但测试时Button上为纯色没有添加图标，当添加图标后发现Button在绕圆心旋转的同时也在自转，进一步思考后将Button改为一个轨迹点，这样点的轨迹就是一个单纯的圆形，然后Button只需要在轨迹点转动时随之转动即可。<br>
+参考项目：无<br>
+2、图片选择器主要借助Loader+Glide+RecyclerView，所以与这三方面如何使用的细节不做过多描述，主要说明一下选择的顺序逻辑实现，在单独页面中时不管如何切换图片文件夹和变换图片选择顺序对顺序的记录都没有太多的难度，关键问题在于发送动态页面和图片选择页面之间来回传递，因为两个页面都可以对相关信息进行改变，而且为了保证图片选择页面中数标的正确显示需要多个序列记录相关信息，这样如果想要借助Intent进行信息的传递不仅增加了代码上的复杂性和出错的概率，而且会使得程序的耦合性增高。综合考虑后决定使用Application，Application优点就是全局共享，效率高，不必考虑Activity之间的传递，而且这些序列信息本身都是一些临时数据不需要持久化，Application完全符合这些要求，也降低了实现的复杂程度，唯一要说明的是使用Application可能会占用更多的内存空间，当内存紧张进行回收时可能会造成数据的丢失，所以只有在处理像这样需要频繁修改并且占用空间小具有实时性的数据时才适合使用Application。<br>
+参考项目：无<br>
+3、自定义动态详情页面的实现参考了很多类似的项目，但是很多项目多多少少都有一些滑动上的小bug，或者不能完全达到需要的效果，同时也考虑到使用谷歌官方提供的解决方案CoordinatorLayout+AppBarLayout但使用这一方案后有些效果就会受到影响，比如Toolbar布局的自定义和响应都会受到一定的限制，后来基于github一个stickyViewpager的项目进行修改和拓展逐渐实现了需要的效果，项目的主要的设计理念是借助帧布局把需要展示的主内容（ScrollerView/ListView/RecyclerView）和Header以及下拉刷新页面按照显示逻辑叠加在一起，然后对主内容加入滑动监听，通过一系列的高度计算和逻辑判断实现Header与主内容的联动和悬停。同样下拉刷新的效果是借助Activity的dispatchOnTouchEvent事件，从整个Touch事件的开始位置进行监听并进行各个方面的处理，包括相关组件的布局属性和自身属性的修改，对滑动事件的多种判断，刷新组件的动画监听等等方面，从而实现下拉刷新的效果。<br>
+参考项目：https://github.com/xmuSistone/stickyViewpager
