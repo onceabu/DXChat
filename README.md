@@ -1,7 +1,7 @@
 # Chat
 一个社交APP
 # 概述
-整体实现是按照传统的Android+Servlet+Json+MySql方案进行的，实时聊天借助Socket在服务端建立队列连接并通信，动态的请求和发送借助Servlet+Json实现，Android方面使用了Okhttp、Glide、circleimageview一些常用的框架，具体实现将在下面说明。（主要在Android方面的实现，数据库和服务端不做过多说明）
+整体实现是按照传统的Android+Servlet+Json+MySql方案进行的，实时聊天借助Socket在服务端建立队列连接并通信，动态的请求和发送借助Servlet+Json实现，Android方面使用了Okhttp、Glide、circleimageview一些常用的框架，具体实现将在下面说明。
 # 数据库
 数据库的设计包含用户信息、用户关系、动态、评论、消息、二次评论和赞，具体直接上图<br>
 ![](https://github.com/onceabu/chat/raw/master/picture/database.jpg)<br>
@@ -58,8 +58,15 @@ ServerThread主要负责对消息的处理，当用户A向用户B发送一条消
 5、这里还需要说明的一点是动态中图片的适配，当图片超过一张时直接按照九宫格的形式，通过屏幕宽度和各个组件之间的间距计算得到九宫格图片的大小，这个比较统一，跟图片本身关系不大。当只有一张图片的时候为了得到合适的显示效果就必须先得到图片的相关信息，至少要有图片的长和宽，因为加载图片需要一个过程，等待的这个过程由适配图负责，所以没有图片的长宽信息适配图的存在也就没有意义，动态的加载过程看起来也会很难受，也就是说图片的相关信息要在加载图片之前获取。所以这里涉及到的问题就是不论通过Glide还是别的形式加载图片都必须先获得图片然后才能知道它的尺寸大小，除非图片源提供了尺寸等相关信息的接口，所以这里只能在动态发布的时候将图片的相关信息一同上传至数据库中，然后在加载图片时先获取其相关信息，然后对其大小比例做适配，最后按照适配好的尺寸加载图片。
 ## 四、寻找好友
 * UI<br>
-好友列表项同样基于RecyclerView，RecyclerView的Adapter贯穿了整个项目，侧边导航栏参考了github上的WaveSideBar项目<br>
-![](https://github.com/onceabu/chat/raw/master/picture/searcha.gif)
+好友列表项同样基于RecyclerView，RecyclerView的Adapter贯穿了整个项目，侧边导航栏参考了github上的WaveSideBar<br>
+![](https://github.com/onceabu/chat/raw/master/picture/searcha.gif)<br>
 ![](https://github.com/onceabu/chat/raw/master/picture/searchb.gif)
 ![](https://github.com/onceabu/chat/raw/master/picture/searchc.gif)<br>
 * 功能实现<br>
+寻找好友模块的实现大部分是数据上的处理，包括好友列表的排序，好友信息区别展示，发送好友请求，获取请求消息以及添加好友等，大部分都是通过服务端处理，这里说一下好友列表的排序，从数据库获取到的好友信息包含CID信息，即好友的name+id，这样即使有好友name重复也可以根据id决定其排列顺序，主要在于中英文的混合排序和归类，这里借助了第三方包pinyin4j，在正则表达式匹配首字符为中文时通过pinyin4j获取不带声调的拼音首字母并添加在CID首位，以特殊字符连接（系统不允许用户使用的特殊字符），然后直接借助Arrays.sort进行排序，排序完成后根据首字母的ASC码做逻辑判断对其添加标识和归类，这样就得到了A~Z的标题栏数据，之后对排序后的CID数据进行特殊字符的去除并适配到RecyclerView中即可。<br>
+关于好友信息区别展示，发送好友请求，获取请求消息以及添加好友等方面多为服务端的逻辑处理，篇幅原因这里不过多描述。
+## 五、个人信息
+个人信息主要包括个人主页、个人信息修改、系统消息和设置方面，由于时间原因,系统消息和设置方面功能还未完全实现。<br>
+* UI<br>
+![](https://github.com/onceabu/chat/raw/master/picture/homepage.gif)
+![](https://github.com/onceabu/chat/raw/master/picture/edit.png)<br>
