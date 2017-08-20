@@ -75,8 +75,9 @@ ServerThread主要负责对消息的处理，当用户A向用户B发送一条消
 2、我的资料的修改方面主要还是与服务端的数据传递和处理，包括头像、主页背景、昵称、个性签名、手机号等。这里主要补充一下拍照上传和图片的裁剪，拍照上传直接调用系统相机，并在启动相机前传递应用关联缓存目录中的Uri过去，用于存放拍摄的照片，之后通过Uri进行上传。裁剪使用的是第三方库，在选择本地图片后获取Uri进行裁剪，裁剪之前除了把这个Uri传递过去，同时像拍照一样也传递一个应用关联缓存目录中的Uri，用于存储裁剪后的图片并且上传。<br>
 ## 六、好友聊天
 * UI<br>
-聊天模块的UI主要还是基于RecyclerView，需要说明的是聊天界面中表情列表的实现。<br>
+聊天列表基于RecyclerView，聊天界面中表情列表的实现参考了CSDN上的博文，需要说明的是Android端对实时聊天的处理。<br>
 ![](https://github.com/onceabu/chat/raw/master/picture/chat.gif)<br>
 * 功能实现<br>
 1、好友聊天主要说明Android端对实时聊天的处理，用户A发送一条消息到用户B为一个过程，整个过程经历了Android->服务端->Android一共三个阶段，第二阶段主要由服务端负责，在上文中服务端的说明中已经进行了详细的描述，这里说明一下第一阶段和第三阶段。和服务端一样，为了及时的处理消息的发送和接收要有一个专门负责消息处理的子线程，不过针对Android的特性这里并不是单纯的子线程，而是Service+子线程，Service能够实现随应用的启动而一同启动并且程序后台运行直到应用进程被杀掉，只不过Service的后台运行并不会自动开启线程，所有的代码默认运行在主线程中，所以我们需要在服务的内部手动创建子线程来执行消息的发送和接收任务。同时不管是消息的发送还是接收总是要展示在Activity中，而Activity恰恰与Service相反总是展示在前台，所以还需要搭建Service与Activity之间的通信，这里我们借助Binder和四大组件之一的BroadcastReceiver，Binder能够实现Activity向Service通信执行消息的发送任务，BroadcastReceiver能够在Service接收到服务端的消息后通知Activity进行新消息的提醒，从而实现整个消息过程的第一和第三阶段。<br>
 ![](https://github.com/onceabu/chat/raw/master/picture/chat.png)<br>
+2、表情聊天参考地址：http://blog.csdn.net/javazejian/article/details/52126391
