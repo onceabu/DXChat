@@ -3,13 +3,13 @@
 1. [概述](https://github.com/onceabu/DXChat/blob/master/README.md#概述)
 2. [数据库](https://github.com/onceabu/DXChat/blob/master/README.md#数据库)
 3. [服务端](https://github.com/onceabu/DXChat/blob/master/README.md#服务端)
-4. [Android端](https://github.com/onceabu/DXChat/blob/master/README.md#Android端)<br>
-　　[整体结构](https://github.com/onceabu/DXChat/blob/master/README.md##一、整体结构)<br>
-　　[登录与注册](https://github.com/onceabu/DXChat/blob/master/README.md##二、登录与注册)<br>
-　　[好友动态](https://github.com/onceabu/DXChat/blob/master/README.md##三、好友动态)<br>
-　　[寻找好友](https://github.com/onceabu/DXChat/blob/master/README.md##四、寻找好友)<br>
-　　[个人信息](https://github.com/onceabu/DXChat/blob/master/README.md##五、个人信息)<br>
-　　[好友聊天](https://github.com/onceabu/DXChat/blob/master/README.md#@六、好友聊天)<br>
+4. [Android端](https://github.com/onceabu/DXChat/blob/master/README.md#android端)<br>
+　　[整体结构](https://github.com/onceabu/DXChat/blob/master/README.md##一整体结构)<br>
+　　[登录与注册](https://github.com/onceabu/DXChat/blob/master/README.md##二登录与注册)<br>
+　　[好友动态](https://github.com/onceabu/DXChat/blob/master/README.md##三好友动态)<br>
+　　[寻找好友](https://github.com/onceabu/DXChat/blob/master/README.md##四寻找好友)<br>
+　　[个人信息](https://github.com/onceabu/DXChat/blob/master/README.md##五个人信息)<br>
+　　[好友聊天](https://github.com/onceabu/DXChat/blob/master/README.md##六好友聊天)<br>
 5. [总结](https://github.com/onceabu/DXChat/blob/master/README.md#总结)
 
 # 概述
