@@ -1,6 +1,17 @@
 # DXChat
 一个社交APP
 1. [概述](https://github.com/onceabu/DXChat/blob/master/README.md#概述)
+1. [数据库](https://github.com/onceabu/DXChat/blob/master/README.md#概述)
+1. [服务端](https://github.com/onceabu/DXChat/blob/master/README.md#概述)
+1. [Android端](https://github.com/onceabu/DXChat/blob/master/README.md#概述)
+1.   [整体结构](https://github.com/onceabu/DXChat/blob/master/README.md#概述)
+1.   [登录与注册](https://github.com/onceabu/DXChat/blob/master/README.md#概述)
+1.   [好友动态](https://github.com/onceabu/DXChat/blob/master/README.md#概述)
+1.   [寻找好友](https://github.com/onceabu/DXChat/blob/master/README.md#概述)
+1.   [个人信息](https://github.com/onceabu/DXChat/blob/master/README.md#概述)
+1.   [好友聊天](https://github.com/onceabu/DXChat/blob/master/README.md#概述)
+1. [总结](https://github.com/onceabu/DXChat/blob/master/README.md#总结)
+
 # 概述
 整体实现是按照传统的Android+Servlet+Json+MySql方案进行的，实时聊天借助Socket在服务端建立队列连接并通信，动态的请求和发送借助Servlet+Json实现，Android方面使用了Okhttp、Glide、circleimageview一些常用的框架。
 # 数据库
